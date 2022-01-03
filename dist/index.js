@@ -16,7 +16,7 @@ Block.validateStucture = (aBlock) => typeof aBlock.index === "number" &&
     typeof aBlock.previousHash === "string" &&
     typeof aBlock.timestamp === "number" &&
     typeof aBlock.data === "string";
-const genesisBlock = new Block(0, "2093j42op3432", "", "Hello", 123456);
+const genesisBlock = new Block(0, "2020202020202", "", "Hello", 123456);
 let blockchain = [genesisBlock];
 const getBlockchain = () => blockchain;
 const getLatestblock = () => blockchain[blockchain.length - 1];
@@ -27,17 +27,18 @@ const createNewBlock = (data) => {
     const newTimestamp = getNewTimestamp();
     const newHash = Block.calculateBlockHash(newIndex, previousBlock.hash, newTimestamp, data);
     const newBlock = new Block(newIndex, newHash, previousBlock.hash, data, newTimestamp);
+    addBlock(newBlock);
     return newBlock;
 };
 const getHashforBlock = (aBlock) => Block.calculateBlockHash(aBlock.index, aBlock.previousHash, aBlock.timestamp, aBlock.data);
 const isblockValid = (candidateBlock, previousBlock) => {
-    if (Block.validateStucture(candidateBlock)) {
+    if (!Block.validateStucture(candidateBlock)) {
         return false;
     }
     else if (previousBlock.index + 1 !== candidateBlock.index) {
         return false;
     }
-    else if (previousBlock.previousHash !== candidateBlock.previousHash) {
+    else if (previousBlock.hash !== candidateBlock.previousHash) {
         return false;
     }
     else if (getHashforBlock(candidateBlock) !== candidateBlock.hash) {
@@ -52,4 +53,8 @@ const addBlock = (candidateBlock) => {
         blockchain.push(candidateBlock);
     }
 };
+createNewBlock("second Block");
+createNewBlock("third Block");
+createNewBlock("fourth Block");
+console.log(blockchain);
 //# sourceMappingURL=index.js.map

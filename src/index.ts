@@ -38,7 +38,7 @@ class Block{
   }
 }
 
-const genesisBlock:Block = new Block(0, "2093j42op3432", "", "Hello", 123456);
+const genesisBlock:Block = new Block(0, "2020202020202", "", "Hello", 123456);
 
 let blockchain: Block[] = [genesisBlock];
 
@@ -65,7 +65,7 @@ const createNewBlock = (data:string) : Block => {
     data, 
     newTimestamp
   );
-
+  addBlock(newBlock);
   return newBlock;
 };
 
@@ -80,11 +80,11 @@ const isblockValid = (
   candidateBlock: Block, 
   previousBlock: Block
   ): boolean => {
-    if(Block.validateStucture(candidateBlock)){
+    if(!Block.validateStucture(candidateBlock)){
       return false;
     } else if(previousBlock.index + 1 !== candidateBlock.index){
       return false;
-    } else if(previousBlock.previousHash !== candidateBlock.previousHash){
+    } else if(previousBlock.hash !== candidateBlock.previousHash){
       return false;
     } else if(getHashforBlock(candidateBlock) !==  candidateBlock.hash){
       return false;
@@ -93,11 +93,16 @@ const isblockValid = (
     }
   };
 
-  const addBlock = (candidateBlock: Block) : void =>{
-    if(isblockValid(candidateBlock, getLatestblock())){
-      blockchain.push(candidateBlock);
-    }
+const addBlock = (candidateBlock: Block) : void =>{
+  if(isblockValid(candidateBlock, getLatestblock())){
+    blockchain.push(candidateBlock);
   }
+}
 
+createNewBlock("second Block");
+createNewBlock("third Block");
+createNewBlock("fourth Block");
+
+console.log(blockchain);
 
 export {};
